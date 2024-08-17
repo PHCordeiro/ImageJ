@@ -4,7 +4,6 @@ This repository contains Java scripts developed to manipulate and process images
 
 The scripts are designed to automate various image processing tasks, making it easier to perform batch operations or custom image alterations.
 
-
 Features
 
 Image manipulation and enhancement

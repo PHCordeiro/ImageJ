@@ -1,11 +1,4 @@
 import ij.plugin.PlugIn;
-import ij.process.ImageProcessor;
-import ij.gui.DialogListener;
-import ij.gui.GenericDialog;
-
-import java.awt.AWTEvent;
-import ij.IJ;
-import ij.ImagePlus;
 
 public class Menu_Slider implements PlugIn, DialogListener {
 	//Declarei aqui para usar no dialogItemChanged
@@ -32,7 +25,7 @@ public class Menu_Slider implements PlugIn, DialogListener {
         interfaceGrafica.addDialogListener(this);
         
         interfaceGrafica.addSlider("Brilho", -255, 255, 0, 1);
-        interfaceGrafica.addSlider("Contraste", 0, 255, 0, 1);
+        interfaceGrafica.addSlider("Contraste", -255, 255, 0, 1);
         interfaceGrafica.addSlider("Solarização", 0, 255, 0, 1);
         interfaceGrafica.addSlider("Dessaturação", 0, 255, 0, 1);
         //Mostra a Interface
@@ -56,11 +49,11 @@ public class Menu_Slider implements PlugIn, DialogListener {
         int height = processadorAtual.getHeight();
 		
 	    int intensidade_brilho = (int) interfaceGrafica.getNextNumber();
-	    int intensidade_contraste = (int) interfaceGrafica.getNextNumber();
+	    double intensidade_contraste = (int) interfaceGrafica.getNextNumber();
 	    int intensidade_solarizacao = (int) interfaceGrafica.getNextNumber();
 	    int intensidade_dessaturacao = (int) interfaceGrafica.getNextNumber();
 	    
-	    float fator_contraste = (259*(intensidade_contraste+255)) / (255*(259-intensidade_contraste));
+	    double fator_contraste = (259*(intensidade_contraste+255)) / (255*(259-intensidade_contraste));
         
 		//For que percorre toda a imagem
 	    for (int y = 0; y < height; y++) {
@@ -152,4 +145,3 @@ public class Menu_Slider implements PlugIn, DialogListener {
     }
 
 }
-

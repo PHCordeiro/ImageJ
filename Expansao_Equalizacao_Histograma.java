@@ -23,7 +23,7 @@ public class Expansao_Equalizacao_Histograma implements PlugIn, DialogListener {
         ImageProcessor processador = imagem.getProcessor();
         
         //A interface genérica
-        GenericDialog interfaceGrafica = new GenericDialog("Menu RGB to Cinza");
+        GenericDialog interfaceGrafica = new GenericDialog("Expansão e Equalização Menu");
         //Fazendo um 'ouvinte' na interface
         interfaceGrafica.addDialogListener(this);
         
@@ -89,13 +89,15 @@ public class Expansao_Equalizacao_Histograma implements PlugIn, DialogListener {
             }
         }
         
-        //Expandindo o Histograma
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-            	int intensidade = processador.getPixel(x, y);
-                int novaIntensidade = (intensidade - itensidadeMinima) * 255 / (itensidadeMaxima - itensidadeMinima);
-                processador.putPixel(x, y, novaIntensidade);
-            }
+        if(itensidadeMaxima != itensidadeMinima) {
+	        //Expandindo o Histograma
+	        for (int y = 0; y < height; y++) {
+	            for (int x = 0; x < width; x++) {
+	            	int intensidade = processador.getPixel(x, y);
+	                int novaIntensidade = (intensidade - itensidadeMinima) * 255 / (itensidadeMaxima - itensidadeMinima);
+	                processador.putPixel(x, y, novaIntensidade);
+	            }
+	        }
         }
     }
     
@@ -146,4 +148,3 @@ public class Expansao_Equalizacao_Histograma implements PlugIn, DialogListener {
     }
 
 }
-

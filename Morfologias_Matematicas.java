@@ -85,20 +85,15 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
         int width = processadorOriginal.getWidth();
         int height = processadorOriginal.getHeight();
 
-        int kernel[][] = {
-            { 1, 1, 1 },
-            { 1, 1, 1 },
-            { 1, 1, 1 }
-        };
-
+        //Ele vai percorrer os vizinhos desse
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
                 int minValorPixel = 255;
-                //Anda pelos vizinhos e aplica a dilatação
+                //Ao achar um preto como vizinho, ele vai tornar esse um preto
                 for (int ky = -1; ky <= 1; ky++) {
                     for (int kx = -1; kx <= 1; kx++) {
-                        int valorPixelVizinho = processadorOriginal.getPixel(x + kx, y + ky) * kernel[ky + 1][kx + 1];;
-                        //Se o valor do vizinho for menor (mais preto), ele domina
+                        int valorPixelVizinho = processadorOriginal.getPixel(x + kx, y + ky);
+                        //Se achar um preto vou alterar o minValorPixel
                         if (valorPixelVizinho < minValorPixel) {
                         	minValorPixel = limitador(valorPixelVizinho);
                         }
@@ -114,19 +109,13 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
         int width = processadorOriginal.getWidth();
         int height = processadorOriginal.getHeight();
 
-        int kernel[][] = {
-            { 1, 1, 1 },
-            { 1, 1, 1 },
-            { 1, 1, 1 }
-        };
-
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
                 int minValorPixel = 0;
 
                 for (int ky = -1; ky <= 1; ky++) {
                     for (int kx = -1; kx <= 1; kx++) {
-                        int valorPixelVizinho = processadorOriginal.getPixel(x + kx, y + ky) * kernel[ky + 1][kx + 1];;
+                        int valorPixelVizinho = processadorOriginal.getPixel(x + kx, y + ky);
                         
                         if (valorPixelVizinho > minValorPixel) {
                         	minValorPixel = limitador(valorPixelVizinho);
@@ -168,4 +157,3 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
 		return value;
     }
 }
-

@@ -48,16 +48,16 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
                     break;
 
                 case "Abertura":
-                	ImageProcessor processador_Abertura = imagem.duplicate().getProcessor(); 
                 	aplicandoErosao(processadorAtual,processadorOriginal);
+                	ImageProcessor processador_Abertura = processadorAtual.duplicate();
                 	aplicandoDilatacao(processador_Abertura,processadorAtual);
                     ImagePlus imagem_abertura = new ImagePlus("Imagem Abertura", processador_Abertura);
                     imagem_abertura.show();
                     break;
                     
                 case "Fechamento":
-                	ImageProcessor processador_Fechamento = imagem.duplicate().getProcessor(); 
                 	aplicandoDilatacao(processadorAtual,processadorOriginal);
+                	ImageProcessor processador_Fechamento = processadorAtual.duplicate();
                 	aplicandoErosao(processador_Fechamento,processadorAtual);
                     ImagePlus imagem_fechamento = new ImagePlus("Imagem Fechamento", processador_Fechamento);
                     imagem_fechamento.show();

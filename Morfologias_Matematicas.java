@@ -88,14 +88,14 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
                 int valorCentral = processadorOriginal.getPixel(x, y);
-                for (int ky = -1; ky <= 1; ky++) {
-                    for (int kx = -1; kx <= 1; kx++) {
-                    	//Ao achar um preto central, ele vai tornar todos os vizinhos pretos
-                        if (valorCentral == 0) {
-                        	processadorAtual.putPixel(x + kx, y + ky, valorCentral);
-                        }
+                if (valorCentral == 0) {
+	                for (int ky = -1; ky <= 1; ky++) {
+	                    for (int kx = -1; kx <= 1; kx++) {
+	                    	//Ao achar um preto central, ele vai tornar todos os vizinhos pretos
+	                        processadorAtual.putPixel(x + kx, y + ky, valorCentral);
+	                    }
                     }
-                }
+                }	
             }
         }
     }

@@ -85,22 +85,17 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
         int width = processadorOriginal.getWidth();
         int height = processadorOriginal.getHeight();
 
-        //Ele vai percorrer os vizinhos desse
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
-                int minValorPixel = 255;
-                //Ao achar um preto como vizinho, ele vai tornar esse um preto
+                int valorCentral = processadorOriginal.getPixel(x, y);
                 for (int ky = -1; ky <= 1; ky++) {
                     for (int kx = -1; kx <= 1; kx++) {
-                        int valorPixelVizinho = processadorOriginal.getPixel(x + kx, y + ky);
-                        //Se achar um preto vou alterar o minValorPixel
-                        if (valorPixelVizinho < minValorPixel) {
-                        	minValorPixel = limitador(valorPixelVizinho);
+                    	//Ao achar um preto central, ele vai tornar todos os vizinhos pretos
+                        if (valorCentral == 0) {
+                        	processadorAtual.putPixel(x + kx, y + ky, valorCentral);
                         }
                     }
                 }
-                
-                processadorAtual.putPixel(x, y, minValorPixel);
             }
         }
     }
@@ -111,19 +106,22 @@ public class Morfologias_Matematicas implements PlugIn, DialogListener {
 
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
-                int minValorPixel = 0;
+            	int pixelsPretos = 0;
 
                 for (int ky = -1; ky <= 1; ky++) {
                     for (int kx = -1; kx <= 1; kx++) {
                         int valorPixelVizinho = processadorOriginal.getPixel(x + kx, y + ky);
-                        
-                        if (valorPixelVizinho > minValorPixel) {
-                        	minValorPixel = limitador(valorPixelVizinho);
+                        if (valorPixelVizinho == 0) {
+                        	pixelsPretos++;
                         }
                     }
                 }
-                
-                processadorAtual.putPixel(x, y, minValorPixel);
+               
+                if(pixelsPretos == 9) {
+                	processadorAtual.putPixel(x, y, 0);
+                }else {
+                	processadorAtual.putPixel(x, y, 255);
+                }
             }
         }
     }

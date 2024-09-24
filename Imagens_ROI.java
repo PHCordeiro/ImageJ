@@ -52,14 +52,23 @@ public class Imagens_ROI implements PlugIn {
         IJ.run(imagem, "8-bit", ""); 
         IJ.setAutoThreshold(imagem, "Otsu");
         IJ.run(imagem, "Make Binary", ""); 
-        IJ.run(imagem, "Dilate", "");
-        IJ.run(imagem, "Dilate", "");
-        IJ.run(imagem, "Fill Holes", ""); 
-
+        
+        int areasDeInteresse = 0;
         RoiManager roiManager = RoiManager.getInstance();
         if (roiManager == null) {
             roiManager = new RoiManager();
         }
+        
+        for (int i = 0; i < roiManager.getCount(); i++) {
+        	areasDeInteresse++;
+        }
+        
+        if(areasDeInteresse >= 30) {
+            IJ.run(imagem, "Dilate", "");
+            IJ.run(imagem, "Dilate", "");
+        }
+        
+        IJ.run(imagem, "Fill Holes", ""); 
         
         //Adicionando ROIs ao RoiManager
         IJ.run(imagem, "Analyze Particles...", "add");  
@@ -95,4 +104,3 @@ public class Imagens_ROI implements PlugIn {
         roiManager.reset();
     }
 }
-

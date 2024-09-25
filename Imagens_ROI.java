@@ -6,6 +6,7 @@ import ij.process.ImageStatistics;
 
 import java.io.File;
 
+
 public class Imagens_ROI implements PlugIn {
 
     public void run(String arg) {
@@ -25,7 +26,7 @@ public class Imagens_ROI implements PlugIn {
         	IJ.error("Nenhum Diretório de Saída encontrado...");
             return;
         }
-        
+
         //Salvando todos os arquivos numa lista
         File imagensDiretorioEntrada = new File(caminhoDiretorioEntrada);
         String imagens[] = imagensDiretorioEntrada.list();
@@ -33,7 +34,10 @@ public class Imagens_ROI implements PlugIn {
         if (imagens != null) {
             for (String file : imagens) {
                 if (file.endsWith(".png") || file.endsWith(".jpg")) {
-                    processandoImagem(new File(caminhoDiretorioEntrada, file), caminhoDiretorioSaida);
+                    String nomePasta = file.substring(0, file.lastIndexOf('.'));
+                    String caminhoNovaPasta = caminhoDiretorioSaida + File.separator + nomePasta; 
+                    new File(caminhoNovaPasta).mkdir();
+                    processandoImagem(new File(caminhoDiretorioEntrada, file), caminhoNovaPasta);
                 }
             }
         }

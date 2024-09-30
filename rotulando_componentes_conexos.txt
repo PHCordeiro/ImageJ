@@ -1,0 +1,84 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+import ij.*;
+import ij.process.*;
+import ij.plugin.PlugIn;
+
+public class rotulando_componentes_conexos implements PlugIn {
+    private ImagePlus imagem = IJ.getImage();
+
+    public void run(String arg) {
+        if (imagem == null || imagem.getType() != ImagePlus.GRAY8) {
+            IJ.error("Apenas imagens 8-bits são suportadas.");
+            return;
+        }
+        
+        ImageProcessor processador = imagem.getProcessor();
+
+        int width = processador.getWidth();
+        int height = processador.getHeight();
+        //Matriz dos rótulos - Começa só com zeros
+        int rotulos[][] = new int[width][height];
+        int rotulo_atual = 1; 
+        
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                //Se preto e não rotulado
+                if (processador.get(x, y) == 0 && rotulos[x][y] == 0) {
+                    rotulando(processador, rotulos, x, y, rotulo_atual, width, height);
+                    //Aumentando para o próximo componente conexo
+                    rotulo_atual++; 
+                }
+            }
+        }
+
+        //Colocando os rótulos na saída
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (rotulos[x][y] > 0) {
+                    processador.set(x, y, rotulos[x][y] * 30);
+                } else {
+                    continue;
+                }
+            }
+        }
+        
+        imagem.updateAndDraw();
+    }
+    
+    public void rotulando(ImageProcessor processador, int rotulos[][], int x, int y, int rotulo_atual, int width, int height) {
+        Queue<int[]> fila = new LinkedList<>();
+        fila.add(new int[]{x, y});
+        rotulos[x][y] = rotulo_atual;
+
+        int vizinhos[][] = {
+            { 0, 1 },  //Direita
+            { 1, 0 },  //Abaixo
+            { 0, -1 }, //Esquerda
+            { -1, 0 }  //Acima
+        };
+
+        while (!fila.isEmpty()) {
+        	//Salvando e removendo o primeiro pixel
+            int pixel[] = fila.remove();
+            int xx = pixel[0];
+            int yy = pixel[1];
+
+            //Iterando sobre cada vizinho
+            for (int[] neighbor : vizinhos) {
+                int novoX = xx + neighbor[0];
+                int novoY = yy + neighbor[1];
+
+                //Vendo se os vizinhos estão no limite da imagem
+                if (novoX >= 0 && novoY >= 0 && novoX < width && novoY < height) {
+                    if (processador.get(novoX, novoY) == 0 && rotulos[novoX][novoY] == 0) {
+                        rotulos[novoX][novoY] = rotulo_atual;
+                        fila.add(new int[]{novoX, novoY});
+                    }
+                }
+            }
+        }
+    }
+}
+
